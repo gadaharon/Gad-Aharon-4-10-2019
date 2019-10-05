@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef } from "react";
+import React, { useContext, useEffect } from "react";
 import { Container, Card, Button } from "react-bootstrap";
 import uuid from "uuid";
 import WeatherList from "./WeatherList";
@@ -59,9 +59,9 @@ export default function Home() {
     if (favorites) {
       const newFavorites = Object.keys(favorites)
         .filter(key => key !== cityId)
-        .reduce((obj, key) => {
-          obj[key] = favorites[key];
-          return obj;
+        .reduce((newFavorites, key) => {
+         newFavorites[key] = favorites[key];
+          return newFavorites;
         }, {});
       localStorage.setItem("favorites", JSON.stringify(newFavorites));
       getCurrentWeather();
@@ -97,6 +97,7 @@ export default function Home() {
             <WeatherList>
               {DailyForecasts.map((item, i) => (
                 <WeatherListItem
+                  key={i}
                   header={getDayByDate(item.Date)}
                   body={item.Temperature.Maximum.Value}
                 />
