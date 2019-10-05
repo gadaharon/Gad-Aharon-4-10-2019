@@ -28,50 +28,50 @@ const State = props => {
   };
   const [state, dispatch] = useReducer(Reducer, initialState);
 
+  
+  //   Fetch forecast from server
+  const getDailyForecast = (URL, locationKey, onFinish) => {
+    axios
+      .get(`${URL.replace("locationKey", locationKey)}`)
+      .then(res => {
+        onFinish(res.data);
+      })
+      .catch(err => {});
+  };
+
   //   Get Current Weather
   const getCurrentWeather = location => {
     const favorites = JSON.parse(localStorage.getItem("favorites"));
+    let locationKey;
     if (Object.keys(location).length !== 0) {
       if (favorites && favorites[location.AdministrativeArea.ID]) {
-        axios
-          .get(
-            `${dailyForecastURL.replace(
-              "locationKey",
-              favorites[location.AdministrativeArea.ID].code
-            )}`
-          )
-          .then(res => {
-            dispatch({
-              type: GET_CURRENT_WEATHER,
-              payload: { isFavorite: true, forecast: res.data }
-            });
-          })
-          .catch(err => {});
+        locationKey = favorites[location.AdministrativeArea.ID].code;
+        getDailyForecast(dailyForecastURL, locationKey, res => {
+          dispatch({
+            type: GET_CURRENT_WEATHER,
+            payload: { isFavorite: true, forecast: res }
+          });
+        });
       } else {
-        axios
-          .get(`${dailyForecastURL.replace("locationKey", location.Key)}`)
-          .then(res => {
-            dispatch({
-              type: GET_CURRENT_WEATHER,
-              payload: { isFavorite: false, forecast: res.data }
-            });
-          })
-          .catch(err => {});
+        locationKey = location.Key;
+        getDailyForecast(dailyForecastURL, locationKey, res => {
+          dispatch({
+            type: GET_CURRENT_WEATHER,
+            payload: { isFavorite: false, forecast: res }
+          });
+        });
       }
     }
   };
 
   //   Get 5 Daily Weather
   const getFiveDaysForecast = locationKey => {
-    axios
-      .get(`${fiveForecastURL.replace("locationKey", locationKey)}`)
-      .then(res => {
-        dispatch({
-          type: GET_5_DAILY_FORECAST,
-          payload: res.data
-        });
-      })
-      .catch(err => {});
+    getDailyForecast(fiveForecastURL, locationKey, res => {
+      dispatch({
+        type: GET_5_DAILY_FORECAST,
+        payload: res
+      });
+    });
   };
 
   //   Set Location
