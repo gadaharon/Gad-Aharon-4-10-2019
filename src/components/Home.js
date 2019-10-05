@@ -4,13 +4,15 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import uuid from "uuid";
 import WeatherList from "./WeatherList";
 import Context from "../context/Context";
+import AlertContext from '../context/AlertContext';
 import AutoComplete from "./AutoComplete";
 import { getDayByDate, isEmpty } from "../Utils/utils";
 import WeatherListItem from "./WeatherListItem";
-import { weatherIconType } from "../enums/weatherImageType";
+import Alerts from "./Alerts";
 
 export default function Home() {
   const context = useContext(Context);
+  const alertContext = useContext(AlertContext);
   const {
     fiveDaysForecast,
     location,
@@ -20,6 +22,8 @@ export default function Home() {
   } = context;
   const { Headline = {}, DailyForecasts = [] } = fiveDaysForecast;
   const { forecast = {}, isFavorite } = currentWeather;
+  const { alerts } = alertContext;
+ 
 
   useEffect(() => {
     if (location.Key) {
@@ -74,6 +78,7 @@ export default function Home() {
     <div className="home">
       <Container>
         <AutoComplete />
+        <Alerts />
         <Card className="mt-5">
           <Card.Header className="header">
             <div className="d-flex">

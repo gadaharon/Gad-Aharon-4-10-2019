@@ -1,12 +1,15 @@
 import React, { useContext, useState, useEffect } from "react";
 import Context from "../context/Context";
+import AlertContext from '../context/AlertContext';
 
 export default function AutoComplete() {
   const [city, setCity] = useState("Tel Aviv");
   const [cities, setCities] = useState([]);
 
   const context = useContext(Context);
+  const alertContext = useContext(AlertContext);
   const { setLocation, getLocation, location } = context;
+  const { setAlert } = alertContext;
 
   useEffect(() => {
     if (Object.keys(location).length === 0) {
@@ -16,8 +19,13 @@ export default function AutoComplete() {
 
   const onSubmit = e => {
     e.preventDefault();
+    if(cities.length === 1 ){
       setLocation(city);
-      setCities([]);
+    } else {
+      setAlert("Choose from the options below", "danger")
+    }
+    setCities([]);
+    
   };
 
   const onClick = name => {
@@ -27,13 +35,14 @@ export default function AutoComplete() {
   };
 
   const onTextChange = e => {
+    console.log(cities);
     setCity(e.target.value);
     getCities();
   };
 
   //   Get Locations By Name
   const getCities = () => {
-    if (city && city !== "") {
+    if ((city && city !== "" ) || city !== " ") {
       getLocation(city, res => {
         setCities(res);
       });
@@ -54,7 +63,7 @@ export default function AutoComplete() {
         />
         <div className="input-group mt-2 col-sm-5 mr-auto ml-auto">
           <div className="autocomplete">
-            {cities.map((item, i) => {
+            {cities && cities.map((item, i) => {
               if (
                 city !== "" &&
                 item.LocalizedName.toLowerCase().includes(city.toLowerCase())
