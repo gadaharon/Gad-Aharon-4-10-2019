@@ -9,8 +9,8 @@ export default function WeatherListItem({
     <li className="weather-list-item">
       <div className="item align-center">
         <h3>{header}</h3>
-        <h4>{body}&#8451;</h4>
-        <h5>{footer}</h5>
+        <h4>{body}&deg;</h4>
+        {footer && <h5 className="pt-3 pb-3">{footer}</h5>}
       </div>
     </li>
   );

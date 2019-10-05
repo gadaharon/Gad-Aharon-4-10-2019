@@ -3,3 +3,7 @@ export function getDayByDate(day) {
   const date = new Date(day);
   return days[date.getDay()];
 }
+
+export function isEmpty(obj) {
+    return Object.keys(obj).length === 0;
+}

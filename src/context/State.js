@@ -11,9 +11,10 @@ import {
 } from "./types";
 
 const apikey = "GAp6HemjRYlZmQ54TD2qC8ESHr8Bb055";
-const forecastsURL = "http://dataservice.accuweather.com/forecasts/v1";
-const dailyForecastURL = `${forecastsURL}/daily/1day/locationKey?apikey=${apikey}&metric=true`;
-const fiveForecastURL = `${forecastsURL}/daily/5day/locationKey?apikey=${apikey}&metric=true`;
+
+export const forecastsURL = "http://dataservice.accuweather.com/forecasts/v1";
+export const dailyForecastURL = `${forecastsURL}/daily/1day/locationKey?apikey=${apikey}&metric=true`;
+export const fiveForecastURL = `${forecastsURL}/daily/5day/locationKey?apikey=${apikey}&metric=true`;
 
 export const autocompleteURL = `http://dataservice.accuweather.com/locations/v1/cities/autocomplete?apikey=${apikey}&q=`;
 
@@ -30,7 +31,7 @@ const State = props => {
 
   
   //   Fetch forecast from server
-  const getDailyForecast = (URL, locationKey, onFinish) => {
+   const getDailyForecast = (URL, locationKey, onFinish) => {
     axios
       .get(`${URL.replace("locationKey", locationKey)}`)
       .then(res => {
@@ -42,10 +43,9 @@ const State = props => {
   //   Get Current Weather
   const getCurrentWeather = location => {
     const favorites = JSON.parse(localStorage.getItem("favorites"));
-    let locationKey;
+    let locationKey = location.Key;
     if (Object.keys(location).length !== 0) {
-      if (favorites && favorites[location.AdministrativeArea.ID]) {
-        locationKey = favorites[location.AdministrativeArea.ID].code;
+      if (favorites && favorites[locationKey]) {
         getDailyForecast(dailyForecastURL, locationKey, res => {
           dispatch({
             type: GET_CURRENT_WEATHER,
@@ -53,7 +53,6 @@ const State = props => {
           });
         });
       } else {
-        locationKey = location.Key;
         getDailyForecast(dailyForecastURL, locationKey, res => {
           dispatch({
             type: GET_CURRENT_WEATHER,
@@ -109,6 +108,7 @@ const State = props => {
         fiveDaysForecast: state.fiveDaysForecast,
         getCurrentWeather,
         getFiveDaysForecast,
+        getDailyForecast,
         getLocation,
         setLocation,
         changeFavoriteStatus

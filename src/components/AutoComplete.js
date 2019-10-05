@@ -16,8 +16,8 @@ export default function AutoComplete() {
 
   const onSubmit = e => {
     e.preventDefault();
-    setLocation(city);
-    setCities([]);
+      setLocation(city);
+      setCities([]);
   };
 
   const onClick = name => {
@@ -46,6 +46,7 @@ export default function AutoComplete() {
         <input
           type="text"
           name="name"
+          minLength={3}
           value={city}
           onChange={onTextChange}
           className="form-control mt-3 col-sm-5 mr-auto ml-auto "

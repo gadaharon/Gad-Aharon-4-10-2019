@@ -1,11 +1,13 @@
 import React, { useContext, useEffect } from "react";
-import { Container, Card, Button } from "react-bootstrap";
+import { Container, Card } from "react-bootstrap";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import uuid from "uuid";
 import WeatherList from "./WeatherList";
 import Context from "../context/Context";
 import AutoComplete from "./AutoComplete";
-import { getDayByDate } from "../Utils/utils";
+import { getDayByDate, isEmpty } from "../Utils/utils";
 import WeatherListItem from "./WeatherListItem";
+import { weatherIconType } from "../enums/weatherImageType";
 
 export default function Home() {
   const context = useContext(Context);
@@ -33,7 +35,7 @@ export default function Home() {
 
   function addToFavorites() {
     let favorites = JSON.parse(localStorage.getItem("favorites"));
-    const cityId = location.AdministrativeArea.ID;
+    const cityId = location.Key;
     const newFavorite = {
       id: uuid.v4(),
       name: location.LocalizedName,
@@ -50,47 +52,51 @@ export default function Home() {
       favorites[cityId] = newFavorite;
       localStorage.setItem("favorites", JSON.stringify(favorites));
     }
-    getCurrentWeather();
+    getCurrentWeather(location);
   }
 
   function removeFromFavorites() {
     let favorites = JSON.parse(localStorage.getItem("favorites"));
-    const cityId = location.AdministrativeArea.ID;
+    const cityId = location.Key;
     if (favorites) {
       const newFavorites = Object.keys(favorites)
         .filter(key => key !== cityId)
         .reduce((newFavorites, key) => {
-         newFavorites[key] = favorites[key];
+          newFavorites[key] = favorites[key];
           return newFavorites;
         }, {});
       localStorage.setItem("favorites", JSON.stringify(newFavorites));
-      getCurrentWeather();
+      getCurrentWeather(location);
     }
   }
 
   return (
-    <div>
+    <div className="home">
       <Container>
         <AutoComplete />
         <Card className="mt-5">
           <Card.Header className="header">
             <div className="d-flex">
-              <div className="pr-5 pl-4 bg-warning"></div>
               <div className="ml-2 float-right">
-                <h6>{location.LocalizedName}</h6>
-                <p>
+                <h1>{location.LocalizedName}</h1>
+                <h4>
                   {forecast.DailyForecasts &&
                     forecast.DailyForecasts[0].Temperature.Maximum.Value}
-                  &#8451;
-                </p>
+                  &deg;
+                </h4>
               </div>
             </div>
-            <Button
+            <button
               onClick={isFavorite ? removeFromFavorites : addToFavorites}
-              className={isFavorite ? "bg-danger" : "bg-secondary"}
+              className="btn"
             >
-              {isFavorite ? "Remove from favorites" : "Add to favorites"}
-            </Button>
+              <h6>Favorite</h6>
+              <FontAwesomeIcon
+                icon="star"
+                size="3x"
+                className={isFavorite ? "favorite-button" : ""}
+              />
+            </button>
           </Card.Header>
           <Card.Body>
             <h2 className="mt-4 mb-5 align-center">{Headline.Text}</h2>
