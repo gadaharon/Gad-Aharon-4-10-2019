@@ -203,7 +203,7 @@ export default function AutoComplete() {
       LocalizedName: "Tel Aviv"
     }
   });
-  const [cities, setCities] = useState(autocomplete);
+  const [cities, setCities] = useState([]);
 
   const context = useContext(Context);
   const { setLocation } = context;
@@ -215,16 +215,18 @@ export default function AutoComplete() {
   const onSubmit = e => {
     e.preventDefault();
     changeLocation();
+    setCities([]);
   };
 
   const onClick = (e, city) => {
     setTextField(e.target.value);
     setCity(city);
+    setCities([]);
   };
 
   const onTextChange = e => {
     setTextField(e.target.value);
-    // getLocations()
+    // getCities()
   };
 
   const changeLocation = () => {
@@ -233,15 +235,14 @@ export default function AutoComplete() {
 
   //   Get Locations By Name
   const getCities = () => {
-    axios
-      .get(`${autocompleteURL}${city}`)
-      .then(res => {
-        console.log(res.data);
-        setCities(res.data);
-      })
-      .catch(err => {
-        console.log(err);
-      });
+    if (textField && textField !== "") {
+      axios
+        .get(`${autocompleteURL}${textField}`)
+        .then(res => {
+          setCities(res.data);
+        })
+        .catch(err => {});
+    }
   };
 
   return (

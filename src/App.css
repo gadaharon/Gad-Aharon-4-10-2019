@@ -9,7 +9,7 @@
     flex: 1;
 }
 .item {
-    background: rgb(235, 231, 231);
+    /* background: rgb(235, 231, 231); */
     padding: 20px;
     border-radius: 15%;
 }
@@ -41,6 +41,9 @@
 }
 
 /* Favorites */
+.favorite-item{
+    margin: 5px;
+}
 
 /* Mobile */
 @media (max-width: 760px) {
