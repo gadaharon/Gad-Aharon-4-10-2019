@@ -240,22 +240,6 @@ const fiveDaysForecastResponse = {
   ]
 };
 
-const location = {
-  Version: 1,
-  Key: "215854",
-  Type: "City",
-  Rank: 31,
-  LocalizedName: "Tel Aviv",
-  Country: {
-    ID: "IL",
-    LocalizedName: "Israel"
-  },
-  AdministrativeArea: {
-    ID: "TA",
-    LocalizedName: "Tel Aviv"
-  }
-};
-
 const State = props => {
   const initialState = {
     location: {},
@@ -268,47 +252,58 @@ const State = props => {
   const [state, dispatch] = useReducer(Reducer, initialState);
 
   //   Get Current Weather
-  const getCurrentWeather = locationKey => {
+  const getCurrentWeather = location => {
     const favorites = JSON.parse(localStorage.getItem("favorites"));
-    if (favorites && favorites[location.AdministrativeArea.ID]) {
-      dispatch({
-        type: GET_CURRENT_WEATHER,
-        payload: { isFavorite: true, forecast: currentWeatherResponse }
-      });
-    } else {
-      dispatch({
-        type: GET_CURRENT_WEATHER,
-        payload: { isFavorite: false, forecast: currentWeatherResponse }
-      });
+    if (Object.keys(location).length !== 0) {
+      if (favorites && favorites[location.AdministrativeArea.ID]) {
+        // axios
+        //   .get(
+        //     `${dailyForecastURL.replace(
+        //       "locationKey",
+        //       favorites[location.AdministrativeArea.ID].code
+        //     )}`
+        //   )
+        //   .then(res => {
+        //     dispatch({
+        //       type: GET_CURRENT_WEATHER,
+        //       payload: { isFavorite: true, forecast: res.data }
+        //     });
+        //   })
+        //   .catch(err => {
+        //     console.log(err);
+        //   });
+      } else {
+        // axios
+        //   .get(`${dailyForecastURL.replace("locationKey", location.Key)}`)
+        //   .then(res => {
+        //     dispatch({
+        //       type: GET_CURRENT_WEATHER,
+        //       payload: { isFavorite: false, forecast: res.data }
+        //     });
+        //   })
+        //   .catch(err => {
+        //     console.log(err);
+        //   });
+      }
     }
-    // axios
-    //   .get(`${dailyForecastURL.replace("locationKey", locationKey)}`)
-    //   .then(res => {
-    //     console.log(res.data);
-    //   })
-    //   .catch(err => {
-    //     console.log(err);
-    //   });
   };
-
   //   Get 5 Daily Weather
   const getFiveDaysForecast = locationKey => {
     // axios
     //   .get(`${fiveForecastURL.replace("locationKey", locationKey)}`)
     //   .then(res => {
-    //     console.log(res.data);
+    //     dispatch({
+    //         type: GET_5_DAILY_FORECAST,
+    //         payload: res.data
+    //       });
     //   })
     //   .catch(err => {
-    //     console.log(err);
     //   });
-    dispatch({
-      type: GET_5_DAILY_FORECAST,
-      payload: fiveDaysForecastResponse
-    });
+
   };
 
   //   Set Location
-  const setLocation = () => {
+  const setLocation = (location = {}) => {
     dispatch({
       type: SET_LOCATION,
       payload: location

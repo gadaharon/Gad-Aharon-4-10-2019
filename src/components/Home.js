@@ -10,7 +10,6 @@ import WeatherListItem from "./WeatherListItem";
 export default function Home() {
   const context = useContext(Context);
   const {
-    setLocation,
     fiveDaysForecast,
     location,
     getCurrentWeather,
@@ -21,11 +20,9 @@ export default function Home() {
   const { forecast = {}, isFavorite } = currentWeather;
 
   useEffect(() => {
-    setLocation("Tel Aviv");
-  }, [currentWeather]);
-
-  useEffect(() => {
-    getCurrentWeather();
+    if (location.Key) {
+      getCurrentWeather(location);
+    }
   }, [location]);
 
   useEffect(() => {

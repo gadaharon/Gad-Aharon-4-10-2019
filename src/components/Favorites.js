@@ -1,13 +1,9 @@
-import React, { useEffect } from "react";
+import React from "react";
 import WeatherList from "./WeatherList";
 import WeatherListItem from "./WeatherListItem";
 
 export default function Favorites() {
   const favorites = JSON.parse(localStorage.getItem("favorites"));
-
-  useEffect(() => {
-    console.log("use effect");
-  }, []);
 
   return (
     <div className="weather-list">
