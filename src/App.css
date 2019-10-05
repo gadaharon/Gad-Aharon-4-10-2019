@@ -1,0 +1,50 @@
+.weather-list {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px;
+}
+.weather-list-item {
+    list-style: none;
+    margin: 5px;
+    flex: 1;
+}
+.item {
+    background: rgb(235, 231, 231);
+    padding: 20px;
+    border-radius: 15%;
+}
+
+.grid-2 {
+  display: grid;
+  grid-gap: 20px;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.align-center {
+  text-align: center;
+}
+
+/* Auto Complete */
+.autocomplete {
+  position: absolute;
+  width: 100%;
+  left: 0;
+  background-color: white;
+  z-index: 1;
+}
+
+/* Home */
+.header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+/* Favorites */
+
+/* Mobile */
+@media (max-width: 760px) {
+  .weather-list {
+    flex-direction: column;
+  }
+}
