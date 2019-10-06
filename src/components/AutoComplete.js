@@ -59,7 +59,6 @@ export default function AutoComplete() {
           type="text"
           name="name"
           value={city}
-          // onBlur={() => {setCities([])}}
           onChange={onTextChange}
           className="form-control mt-3 col-sm-5 mr-auto ml-auto "
           placeholder="Search"

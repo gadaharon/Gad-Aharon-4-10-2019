@@ -5,6 +5,7 @@ import SettingsContext from "../context/SettingsContext";
 import WeatherList from "./WeatherList";
 import WeatherListItem from "./WeatherListItem";
 import { Container } from "react-bootstrap";
+import { isEmpty } from "../Utils/utils";
 
 export default function Favorites() {
   const weatherContext = useContext(WeatherContext);
@@ -18,17 +19,6 @@ export default function Favorites() {
     setLocation(city);
   };
 
-  /**
- * const currentDay = getDayByDate(Date.now);
-    Object.keys(data).map(key => {
-        if((data[key].currentWeather.Date) !== currentDay) {
-            getDailyForecast(dailyForecastURL, key, res => {
-                data[key].currentWeather = res
-            })
-        }
-    })
- */
-
   useEffect(() => {
     getFavorites();
   }, []);
@@ -41,9 +31,9 @@ export default function Favorites() {
           style={showAnimations ? {} : { animation: "none" }}
         >
           <h1 className="align-center mt-5 mb-3">Favorites</h1>
-          <WeatherList>
-            {favorites &&
-              Object.keys(favorites).map((key, i) => (
+          {!isEmpty(favorites) ? (
+            <WeatherList>
+              {Object.keys(favorites).map((key, i) => (
                 <Link
                   to="/"
                   onClick={() => onFavoriteClick(favorites[key].name)}
@@ -59,7 +49,10 @@ export default function Favorites() {
                   />
                 </Link>
               ))}
-          </WeatherList>
+            </WeatherList>
+          ) : (
+            <h3 className="align-center">No Favorites in Stock</h3>
+          )}
         </div>
       </Container>
     </div>

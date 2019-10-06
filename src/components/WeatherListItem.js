@@ -6,13 +6,15 @@ export default function WeatherListItem({
   body = null,
   footer = null
 }) {
-    
-const settingsContext = useContext(SettingsContext);
-const { settings } = settingsContext;
-const { showAnimations } = settings;  
+  const settingsContext = useContext(SettingsContext);
+  const { settings } = settingsContext;
+  const { showAnimations } = settings;
 
-return (
-    <li className="weather-list-item" style={showAnimations ? {} : { animation: "none" }}>
+  return (
+    <li
+      className="weather-list-item"
+      style={showAnimations ? {} : { animation: "none" }}
+    >
       <div className="item-light align-center">
         <h3>{header}</h3>
         <h4>{body}&deg;</h4>

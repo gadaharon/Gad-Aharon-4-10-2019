@@ -9,7 +9,7 @@ import {
   SET_LOCATION,
   GET_FAVORITES
 } from "./types";
-import { getItem, isEmpty } from "../Utils/utils";
+import { getItem, isEmpty, setItem } from "../Utils/utils";
 
 const apikey = "GAp6HemjRYlZmQ54TD2qC8ESHr8Bb055";
 
@@ -77,7 +77,7 @@ const WeatherState = props => {
     });
   };
 
-//   Get locations from server
+  //   Get locations from server
   const getLocation = (city, onFinish) => {
     axios
       .get(`${autocompleteURL}${city}`)
@@ -88,13 +88,20 @@ const WeatherState = props => {
   };
 
   const getFavorites = () => {
-    const favorites = getItem('favorites', {});  
+    const favorites = getItem("favorites", {});
+    if(!isEmpty(favorites)){
+      Object.keys(favorites).forEach(key => {
+        getDailyForecast(dailyForecastURL, key, res => {
+          favorites[key].currentWeather = res.DailyForecasts[0];
+        });
+      });
+    }
+    setItem('favorites', favorites);
     dispatch({
       type: GET_FAVORITES,
       payload: favorites
     });
   };
-
 
   return (
     <WeatherContext.Provider

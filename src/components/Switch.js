@@ -10,19 +10,27 @@ export default function Switch(props) {
 
   return (
     <div className="custom-control custom-switch">
-      <input
-        type="checkbox"
-        checked={value}
-        onChange={onValueChange}
-        className="custom-control-input"
-        id="customSwitch1"
-      />
-      <label
-        className="custom-control-label text-white"
-        htmlFor="customSwitch1"
+      <span
+        className="d-inline-block"
+        tabIndex="0"
+        data-toggle="tooltip"
+        title={props.tooltipTitle}
       >
-        {props.label}
-      </label>
+        <input
+          type="checkbox"
+          checked={value}
+          onChange={onValueChange}
+          className="custom-control-input"
+          id="customSwitch1"
+        />
+
+        <label
+          className="custom-control-label text-white"
+          htmlFor="customSwitch1"
+        >
+          {props.label}
+        </label>
+      </span>
     </div>
   );
 }
