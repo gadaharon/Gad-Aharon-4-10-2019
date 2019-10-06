@@ -2,13 +2,13 @@ import {
   GET_CURRENT_WEATHER,
   GET_5_DAILY_FORECAST,
   SET_LOCATION,
-  CHANGE_FAVORITE_STATUS
+  GET_FAVORITES
 } from "./types";
 
 export default (state, action) => {
   // eslint-disable-next-line default-case
   switch (action.type) {
-    case SET_LOCATION: 
+    case SET_LOCATION:
       return {
         ...state,
         location: action.payload
@@ -23,11 +23,11 @@ export default (state, action) => {
         ...state,
         fiveDaysForecast: action.payload
       };
-    case CHANGE_FAVORITE_STATUS:
+    case GET_FAVORITES:
       return {
         ...state,
-        currentWeather: action.payload
-      };
+        favorites: action.payload
+      }  
     default:
       return state;
   }

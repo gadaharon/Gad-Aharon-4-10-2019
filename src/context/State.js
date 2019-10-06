@@ -7,8 +7,9 @@ import {
   GET_5_DAILY_FORECAST,
   GET_CURRENT_WEATHER,
   SET_LOCATION,
-  CHANGE_FAVORITE_STATUS
+  GET_FAVORITES
 } from "./types";
+import { getItem, isEmpty } from "../Utils/utils";
 
 const apikey = "GAp6HemjRYlZmQ54TD2qC8ESHr8Bb055";
 
@@ -25,13 +26,13 @@ const State = props => {
       isFavorite: false,
       forecast: {}
     },
-    fiveDaysForecast: []
+    fiveDaysForecast: [],
+    favorites: {}
   };
   const [state, dispatch] = useReducer(Reducer, initialState);
 
-  
   //   Fetch forecast from server
-   const getDailyForecast = (URL, locationKey, onFinish) => {
+  const getDailyForecast = (URL, locationKey, onFinish) => {
     axios
       .get(`${URL.replace("locationKey", locationKey)}`)
       .then(res => {
@@ -42,24 +43,17 @@ const State = props => {
 
   //   Get Current Weather
   const getCurrentWeather = location => {
-    const favorites = JSON.parse(localStorage.getItem("favorites"));
-    let locationKey = location.Key;
-    if (Object.keys(location).length !== 0) {
-      if (favorites && favorites[locationKey]) {
-        getDailyForecast(dailyForecastURL, locationKey, res => {
-          dispatch({
-            type: GET_CURRENT_WEATHER,
-            payload: { isFavorite: true, forecast: res }
-          });
+    if (!isEmpty(location)) {
+      //   Get favorites from local storage
+      const favorites = getItem("favorites", {});
+      const isFavorite = favorites && favorites[location.Key];
+
+      getDailyForecast(dailyForecastURL, location.Key, res => {
+        dispatch({
+          type: GET_CURRENT_WEATHER,
+          payload: { isFavorite, forecast: res }
         });
-      } else {
-        getDailyForecast(dailyForecastURL, locationKey, res => {
-          dispatch({
-            type: GET_CURRENT_WEATHER,
-            payload: { isFavorite: false, forecast: res }
-          });
-        });
-      }
+      });
     }
   };
 
@@ -83,6 +77,7 @@ const State = props => {
     });
   };
 
+  //   Get locations from server
   const getLocation = (city, onFinish) => {
     axios
       .get(`${autocompleteURL}${city}`)
@@ -92,11 +87,11 @@ const State = props => {
       .catch(err => {});
   };
 
-  //   Change Favorite Status
-  const changeFavoriteStatus = isFavorite => {
+  const getFavorites = () => {
+    const favorites = getItem("favorites", {});
     dispatch({
-      type: CHANGE_FAVORITE_STATUS,
-      payload: { ...state.currentWeather, isFavorite }
+      type: GET_FAVORITES,
+      payload: favorites
     });
   };
 
@@ -106,12 +101,13 @@ const State = props => {
         location: state.location,
         currentWeather: state.currentWeather,
         fiveDaysForecast: state.fiveDaysForecast,
+        favorites: state.favorites,
         getCurrentWeather,
         getFiveDaysForecast,
         getDailyForecast,
         getLocation,
         setLocation,
-        changeFavoriteStatus
+        getFavorites
       }}
     >
       {props.children}

@@ -1,9 +1,12 @@
 import React, { useContext, useState, useEffect } from "react";
 import Context from "../context/Context";
 import AlertContext from '../context/AlertContext';
+import { isEmpty } from "../Utils/utils";
+
+const DEFAULT_CITY = 'Tel Aviv';
 
 export default function AutoComplete() {
-  const [city, setCity] = useState("Tel Aviv");
+  const [city, setCity] = useState('');
   const [cities, setCities] = useState([]);
 
   const context = useContext(Context);
@@ -12,17 +15,19 @@ export default function AutoComplete() {
   const { setAlert } = alertContext;
 
   useEffect(() => {
-    if (Object.keys(location).length === 0) {
-      setLocation(city);
+    if (isEmpty(location)) {
+      setLocation(DEFAULT_CITY);
     }
   }, []);
 
   const onSubmit = e => {
     e.preventDefault();
-    if(cities.length === 1 ){
-      setLocation(city);
+    console.log(cities)
+    if(cities.length >= 1 ){
+      setLocation(cities[0].LocalizedName);
+      setCity(cities[0].LocalizedName);
     } else {
-      setAlert("Choose from the options below", "danger")
+      setAlert("Make sure you entered a valid city", "danger")
     }
     setCities([]);
     
@@ -35,7 +40,6 @@ export default function AutoComplete() {
   };
 
   const onTextChange = e => {
-    console.log(cities);
     setCity(e.target.value);
     getCities();
   };
@@ -55,8 +59,8 @@ export default function AutoComplete() {
         <input
           type="text"
           name="name"
-          minLength={3}
           value={city}
+          // onBlur={() => {setCities([])}}
           onChange={onTextChange}
           className="form-control mt-3 col-sm-5 mr-auto ml-auto "
           placeholder="Search"
@@ -64,10 +68,6 @@ export default function AutoComplete() {
         <div className="input-group mt-2 col-sm-5 mr-auto ml-auto">
           <div className="autocomplete">
             {cities && cities.map((item, i) => {
-              if (
-                city !== "" &&
-                item.LocalizedName.toLowerCase().includes(city.toLowerCase())
-              ) {
                 return (
                   <input
                     key={i}
@@ -77,9 +77,7 @@ export default function AutoComplete() {
                     value={item.LocalizedName}
                   />
                 );
-              } else {
-                return null;
-              }
+          
             })}
           </div>
         </div>

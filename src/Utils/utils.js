@@ -5,5 +5,17 @@ export function getDayByDate(day) {
 }
 
 export function isEmpty(obj) {
-    return Object.keys(obj).length === 0;
+  return Object.keys(obj).length === 0;
+}
+
+export function getItem(key, defaultValue) {
+  const item = JSON.parse(localStorage.getItem(key));
+  if (item === null) {
+    return defaultValue;
+  }
+  return item;
+}
+
+export function setItem(key, value) {
+  localStorage.setItem(key, JSON.stringify(value));
 }
