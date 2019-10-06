@@ -11,7 +11,7 @@ import {
 } from "./types";
 import { getItem, isEmpty, setItem } from "../Utils/utils";
 
-const apikey = "GAp6HemjRYlZmQ54TD2qC8ESHr8Bb055";
+const apikey = "Your API Key";
 
 const forecastsURL = "http://dataservice.accuweather.com/forecasts/v1";
 const locationURL = "http://dataservice.accuweather.com/locations/v1/cities";
