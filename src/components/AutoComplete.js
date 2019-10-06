@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from "react";
-import Context from "../context/Context";
+import WeatherContext from "../context/WeatherContext";
 import AlertContext from '../context/AlertContext';
 import { isEmpty } from "../Utils/utils";
 
@@ -9,9 +9,9 @@ export default function AutoComplete() {
   const [city, setCity] = useState('');
   const [cities, setCities] = useState([]);
 
-  const context = useContext(Context);
+  const weatherContext = useContext(WeatherContext);
   const alertContext = useContext(AlertContext);
-  const { setLocation, getLocation, location } = context;
+  const { setLocation, getLocation, location } = weatherContext;
   const { setAlert } = alertContext;
 
   useEffect(() => {

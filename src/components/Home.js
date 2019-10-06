@@ -3,7 +3,7 @@ import { Container } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import uuid from "uuid";
 import WeatherList from "./WeatherList";
-import Context from "../context/Context";
+import WeatherContext from "../context/WeatherContext";
 import AlertContext from "../context/AlertContext";
 import AutoComplete from "./AutoComplete";
 import { getDayByDate, getItem, isEmpty, setItem } from "../Utils/utils";
@@ -11,7 +11,7 @@ import WeatherListItem from "./WeatherListItem";
 import Alerts from "./Alerts";
 
 export default function Home() {
-  const context = useContext(Context);
+  const weatherContext = useContext(WeatherContext);
   const alertContext = useContext(AlertContext);
   const {
     fiveDaysForecast,
@@ -19,7 +19,7 @@ export default function Home() {
     getCurrentWeather,
     currentWeather,
     getFiveDaysForecast
-  } = context;
+  } = weatherContext;
   const { Headline = {}, DailyForecasts = [] } = fiveDaysForecast;
   const { forecast = {}, isFavorite } = currentWeather;
   const { setAlert } = alertContext;

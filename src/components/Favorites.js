@@ -1,13 +1,13 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import Context from "../context/Context";
+import WeatherContext from "../context/WeatherContext";
 import WeatherList from "./WeatherList";
 import WeatherListItem from "./WeatherListItem";
 import { Container } from "react-bootstrap";
 
 export default function Favorites() {
-  const context = useContext(Context);
-  const { setLocation, getFavorites, favorites } = context;
+  const weatherContext = useContext(WeatherContext);
+  const { setLocation, getFavorites, favorites } = weatherContext;
 
   const onFavoriteClick = city => {
     setLocation(city);

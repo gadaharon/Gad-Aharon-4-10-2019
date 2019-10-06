@@ -1,7 +1,7 @@
 import React, { useReducer } from "react";
 import axios from "axios";
-import Context from "./Context";
-import Reducer from "./Reducer";
+import WeatherContext from "./WeatherContext";
+import WeatherReducer from "./WeatherReducer";
 
 import {
   GET_5_DAILY_FORECAST,
@@ -19,7 +19,7 @@ export const fiveForecastURL = `${forecastsURL}/daily/5day/locationKey?apikey=${
 
 export const autocompleteURL = `http://dataservice.accuweather.com/locations/v1/cities/autocomplete?apikey=${apikey}&q=`;
 
-const State = props => {
+const WeatherState = props => {
   const initialState = {
     location: {},
     currentWeather: {
@@ -29,7 +29,7 @@ const State = props => {
     fiveDaysForecast: [],
     favorites: {}
   };
-  const [state, dispatch] = useReducer(Reducer, initialState);
+  const [state, dispatch] = useReducer(WeatherReducer, initialState);
 
   //   Fetch forecast from server
   const getDailyForecast = (URL, locationKey, onFinish) => {
@@ -77,7 +77,7 @@ const State = props => {
     });
   };
 
-  //   Get locations from server
+//   Get locations from server
   const getLocation = (city, onFinish) => {
     axios
       .get(`${autocompleteURL}${city}`)
@@ -88,15 +88,16 @@ const State = props => {
   };
 
   const getFavorites = () => {
-    const favorites = getItem("favorites", {});
+    const favorites = getItem('favorites', {});  
     dispatch({
       type: GET_FAVORITES,
       payload: favorites
     });
   };
 
+
   return (
-    <Context.Provider
+    <WeatherContext.Provider
       value={{
         location: state.location,
         currentWeather: state.currentWeather,
@@ -111,8 +112,8 @@ const State = props => {
       }}
     >
       {props.children}
-    </Context.Provider>
+    </WeatherContext.Provider>
   );
 };
 
-export default State;
+export default WeatherState;

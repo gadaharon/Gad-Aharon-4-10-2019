@@ -2,7 +2,7 @@ import React from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import "./App.css";
 import Header from "./components/Header";
-import State from "./context/State";
+import WeatherState from "./context/WeatherState";
 import AlertState from "./context/AlertState";
 import Home from "./components/Home";
 import Favorites from "./components/Favorites";
@@ -16,7 +16,7 @@ library.add(fab, fas);
 function App() {
   return (
     <div className="app">
-      <State>
+      <WeatherState>
         <AlertState>
           <Router>
             <Header />
@@ -26,7 +26,7 @@ function App() {
             </Switch>
           </Router>
         </AlertState>
-      </State>
+      </WeatherState>
     </div>
   );
 }
