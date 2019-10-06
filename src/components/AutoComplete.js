@@ -22,7 +22,6 @@ export default function AutoComplete() {
 
   const onSubmit = e => {
     e.preventDefault();
-    console.log(cities)
     if(cities.length >= 1 ){
       setLocation(cities[0].LocalizedName);
       setCity(cities[0].LocalizedName);

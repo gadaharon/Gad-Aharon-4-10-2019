@@ -5,6 +5,7 @@ import uuid from "uuid";
 import WeatherList from "./WeatherList";
 import WeatherContext from "../context/WeatherContext";
 import AlertContext from "../context/AlertContext";
+import SettingsContext from "../context/SettingsContext";
 import AutoComplete from "./AutoComplete";
 import { getDayByDate, getItem, isEmpty, setItem } from "../Utils/utils";
 import WeatherListItem from "./WeatherListItem";
@@ -12,7 +13,9 @@ import Alerts from "./Alerts";
 
 export default function Home() {
   const weatherContext = useContext(WeatherContext);
+  const settingsContext = useContext(SettingsContext);
   const alertContext = useContext(AlertContext);
+
   const {
     fiveDaysForecast,
     location,
@@ -23,6 +26,9 @@ export default function Home() {
   const { Headline = {}, DailyForecasts = [] } = fiveDaysForecast;
   const { forecast = {}, isFavorite } = currentWeather;
   const { setAlert } = alertContext;
+
+  const { settings } = settingsContext;
+  const { showAnimations } = settings;
 
   useEffect(() => {
     // Get current weather and 5 daily forecast
@@ -48,7 +54,7 @@ export default function Home() {
   }
 
   function removeFromFavorites() {
-    //  get items from local storage 
+    //  get items from local storage
     let favorites = getItem("favorites", {});
     const cityId = location.Key;
     if (!isEmpty(favorites)) {
@@ -69,7 +75,10 @@ export default function Home() {
       <Container>
         <AutoComplete />
         <Alerts />
-        <div className="details mt-5">
+        <div
+          className="details mt-5"
+          style={showAnimations ? {} : { animation: "none" }}
+        >
           <div className="header">
             <div className="d-flex">
               <div className="ml-2 float-right">

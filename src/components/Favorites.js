@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import WeatherContext from "../context/WeatherContext";
+import SettingsContext from "../context/SettingsContext";
 import WeatherList from "./WeatherList";
 import WeatherListItem from "./WeatherListItem";
 import { Container } from "react-bootstrap";
@@ -8,6 +9,10 @@ import { Container } from "react-bootstrap";
 export default function Favorites() {
   const weatherContext = useContext(WeatherContext);
   const { setLocation, getFavorites, favorites } = weatherContext;
+  const settingsContext = useContext(SettingsContext);
+
+  const { settings } = settingsContext;
+  const { showAnimations } = settings;
 
   const onFavoriteClick = city => {
     setLocation(city);
@@ -31,7 +36,10 @@ export default function Favorites() {
   return (
     <div className="favorites pt-5 background-image">
       <Container>
-        <div className="details">
+        <div
+          className="details"
+          style={showAnimations ? {} : { animation: "none" }}
+        >
           <h1 className="align-center mt-5 mb-3">Favorites</h1>
           <WeatherList>
             {favorites &&
