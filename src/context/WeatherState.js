@@ -13,11 +13,13 @@ import { getItem, isEmpty, setItem } from "../Utils/utils";
 
 const apikey = "GAp6HemjRYlZmQ54TD2qC8ESHr8Bb055";
 
-export const forecastsURL = "http://dataservice.accuweather.com/forecasts/v1";
+const forecastsURL = "http://dataservice.accuweather.com/forecasts/v1";
+const locationURL = "http://dataservice.accuweather.com/locations/v1/cities";
 export const dailyForecastURL = `${forecastsURL}/daily/1day/locationKey?apikey=${apikey}&metric=true`;
 export const fiveForecastURL = `${forecastsURL}/daily/5day/locationKey?apikey=${apikey}&metric=true`;
 
-export const autocompleteURL = `http://dataservice.accuweather.com/locations/v1/cities/autocomplete?apikey=${apikey}&q=`;
+export const autocompleteURL = `${locationURL}/autocomplete?apikey=${apikey}&q=`;
+export const getByGeoPositionURL = `${locationURL}/geoposition/search?apikey=${apikey}&q={lat}%2C{lng}`;
 
 const WeatherState = props => {
   const initialState = {
@@ -87,16 +89,26 @@ const WeatherState = props => {
       .catch(err => {});
   };
 
+  const getLocationByGeoPosition = ({ lat, lng }, onFinish) => {
+    const url = getByGeoPositionURL.replace("{lat}%2C{lng}", `${lat}%2C${lng}`);
+    axios
+      .get(url)
+      .then(res => {
+        onFinish(res.data);
+      })
+      .catch(err => {});
+  };
+
   const getFavorites = () => {
     const favorites = getItem("favorites", {});
-    if(!isEmpty(favorites)){
+    if (!isEmpty(favorites)) {
       Object.keys(favorites).forEach(key => {
         getDailyForecast(dailyForecastURL, key, res => {
           favorites[key].currentWeather = res.DailyForecasts[0];
         });
       });
     }
-    setItem('favorites', favorites);
+    setItem("favorites", favorites);
     dispatch({
       type: GET_FAVORITES,
       payload: favorites
@@ -115,6 +127,7 @@ const WeatherState = props => {
         getDailyForecast,
         getLocation,
         setLocation,
+        getLocationByGeoPosition,
         getFavorites
       }}
     >
