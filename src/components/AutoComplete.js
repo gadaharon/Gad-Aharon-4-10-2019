@@ -1,25 +1,26 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import {
   setLocation,
   getLocationByGeoPosition,
   getLocation
 } from "../actions/weatherActions";
+import { setAlert } from "../actions/alertAction";
 
-import AlertContext from "../context/AlertContext";
 import { isEmpty, getCurrentPosition } from "../Utils/utils";
 
 const DEFAULT_CITY = "Tel Aviv";
 
-const AutoComplete = ({ weather, setLocation, getLocationByGeoPosition }) => {
+const AutoComplete = ({
+  weather,
+  setLocation,
+  getLocationByGeoPosition,
+  setAlert
+}) => {
   const [city, setCity] = useState("");
   const [cities, setCities] = useState([]);
 
   const { location } = weather;
-
-  const alertContext = useContext(AlertContext);
-
-  const { setAlert } = alertContext;
 
   useEffect(() => {
     if (isEmpty(location)) {
@@ -117,5 +118,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { setLocation, getLocationByGeoPosition, getLocation }
+  { setLocation, getLocationByGeoPosition, getLocation, setAlert }
 )(AutoComplete);

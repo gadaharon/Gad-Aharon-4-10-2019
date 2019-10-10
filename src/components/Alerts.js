@@ -1,10 +1,8 @@
-import React, { useContext } from "react";
-import AlertContext from '../context/AlertContext';
+import React from "react";
+import { connect } from 'react-redux';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-const Alerts = () => {
-  const alertContext = useContext(AlertContext);
-  const { alerts } = alertContext;
+const Alerts = ({ alerts }) => {
   return (
     alerts.length > 0 &&
     alerts.map(alert => (
@@ -15,4 +13,8 @@ const Alerts = () => {
   );
 };
 
-export default Alerts;
+const mapStateToProps = state => ({
+  alerts: state.alerts
+})
+
+export default connect(mapStateToProps)(Alerts);
