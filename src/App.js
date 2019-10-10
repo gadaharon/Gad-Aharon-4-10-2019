@@ -6,6 +6,8 @@ import WeatherState from "./context/WeatherState";
 import AlertState from "./context/AlertState";
 import Home from "./components/Home";
 import Favorites from "./components/Favorites";
+import { Provider } from "react-redux";
+import store from "./store";
 
 // Font Awesome React
 import { library } from "@fortawesome/fontawesome-svg-core";
@@ -16,21 +18,23 @@ library.add(fab, fas);
 
 function App() {
   return (
-    <div className="app">
-      <WeatherState>
-        <SettingsState>
-          <AlertState>
-            <Router>
-              <Navbar />
-              <Switch>
-                <Route exact path="/" component={Home} />
-                <Route exact path="/favorites" component={Favorites} />
-              </Switch>
-            </Router>
-          </AlertState>
-        </SettingsState>
-      </WeatherState>
-    </div>
+    <Provider store={store}>
+      <div className="app">
+        <WeatherState>
+          <SettingsState>
+            <AlertState>
+              <Router>
+                <Navbar />
+                <Switch>
+                  <Route exact path="/" component={Home} />
+                  <Route exact path="/favorites" component={Favorites} />
+                </Switch>
+              </Router>
+            </AlertState>
+          </SettingsState>
+        </WeatherState>
+      </div>
+    </Provider>
   );
 }
 
