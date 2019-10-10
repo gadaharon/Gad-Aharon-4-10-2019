@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 
-const WeatherListItem = ({ header, body = null, footer = null, settings }) => {
+const WeatherListItem = ({ header = '', body = '', footer = '', settings }) => {
   const { showAnimations } = settings;
 
   return (
@@ -25,8 +25,6 @@ const mapStateToProps = state => ({
 
 WeatherListItem.propTypes = {
   header: PropTypes.string,
-  body: PropTypes.string,
-  footer: PropTypes.string,
   settings: PropTypes.object.isRequired
 };
 

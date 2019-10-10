@@ -117,7 +117,7 @@ const Home = ({
                 <WeatherListItem
                   key={i}
                   header={getDayByDate(item.Date)}
-                  body={item.Temperature.Maximum.Value}
+                  body={item.Temperature.Maximum.Value.toString()}
                 />
               ))}
             </WeatherList>
