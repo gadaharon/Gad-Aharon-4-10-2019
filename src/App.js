@@ -2,7 +2,6 @@ import React from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import "./App.css";
 import Navbar from "./components/NavBar";
-import WeatherState from "./context/WeatherState";
 import AlertState from "./context/AlertState";
 import Home from "./components/Home";
 import Favorites from "./components/Favorites";
@@ -20,7 +19,6 @@ function App() {
   return (
     <Provider store={store}>
       <div className="app">
-        <WeatherState>
           <SettingsState>
             <AlertState>
               <Router>
@@ -32,7 +30,6 @@ function App() {
               </Router>
             </AlertState>
           </SettingsState>
-        </WeatherState>
       </div>
     </Provider>
   );

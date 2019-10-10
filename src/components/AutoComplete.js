@@ -1,49 +1,51 @@
 import React, { useContext, useState, useEffect } from "react";
-import WeatherContext from "../context/WeatherContext";
+import { connect } from "react-redux";
+import {
+  setLocation,
+  getLocationByGeoPosition,
+  getLocation
+} from "../actions/weatherActions";
+
 import AlertContext from "../context/AlertContext";
-import { isEmpty } from "../Utils/utils";
+import { isEmpty, getCurrentPosition } from "../Utils/utils";
 
 const DEFAULT_CITY = "Tel Aviv";
 
-export default function AutoComplete() {
+const AutoComplete = ({ weather, setLocation, getLocationByGeoPosition }) => {
   const [city, setCity] = useState("");
   const [cities, setCities] = useState([]);
 
-  const weatherContext = useContext(WeatherContext);
+  const { location } = weather;
+
   const alertContext = useContext(AlertContext);
-  const {
-    setLocation,
-    getLocation,
-    location,
-    getLocationByGeoPosition
-  } = weatherContext;
+
   const { setAlert } = alertContext;
 
   useEffect(() => {
     if (isEmpty(location)) {
       if ("geolocation" in navigator) {
-        getCurrentPosition();
+        setCurrentLocation();
       } else {
         setLocation(DEFAULT_CITY);
       }
     }
   }, []);
 
-  const getCurrentPosition = () => {
-    navigator.geolocation.getCurrentPosition(
-      position => {
-        const { coords } = position;
-        getLocationByGeoPosition(
-          { lat: coords.latitude, lng: coords.longitude },
-          res => {
-            setLocation(res.LocalizedName);
-          }
-        );
-      },
-      err => {
-        setLocation(DEFAULT_CITY);
-      }
-    );
+  const setCurrentLocation = async () => {
+    try {
+      const { coords } = await getCurrentPosition();
+      getLocationByGeoPosition(
+        { lat: coords.latitude, lng: coords.longitude },
+        res => {
+          setLocation(res.LocalizedName);
+        },
+        err => {
+          setLocation(DEFAULT_CITY);
+        }
+      );
+    } catch (err) {
+      setLocation(DEFAULT_CITY);
+    }
   };
 
   const onSubmit = e => {
@@ -107,4 +109,13 @@ export default function AutoComplete() {
       </div>
     </form>
   );
-}
+};
+
+const mapStateToProps = state => ({
+  weather: state.weather
+});
+
+export default connect(
+  mapStateToProps,
+  { setLocation, getLocationByGeoPosition, getLocation }
+)(AutoComplete);

@@ -1,15 +1,15 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect } from "react";
+import { connect } from 'react-redux';
 import { Link } from "react-router-dom";
-import WeatherContext from "../context/WeatherContext";
 import SettingsContext from "../context/SettingsContext";
 import WeatherList from "./WeatherList";
 import WeatherListItem from "./WeatherListItem";
 import { Container } from "react-bootstrap";
 import { isEmpty } from "../Utils/utils";
 
-export default function Favorites() {
-  const weatherContext = useContext(WeatherContext);
-  const { setLocation, getFavorites, favorites } = weatherContext;
+import { getFavorites, setLocation } from '../actions/weatherActions';
+
+const Favorites = ({ favorites, getFavorites, setLocation}) => {
   const settingsContext = useContext(SettingsContext);
 
   const { settings } = settingsContext;
@@ -58,3 +58,9 @@ export default function Favorites() {
     </div>
   );
 }
+
+const mapStateToProps = state => ({
+  favorites: state.weather.favorites
+})
+
+export default connect(mapStateToProps, { setLocation, getFavorites })(Favorites);

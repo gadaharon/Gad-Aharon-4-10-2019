@@ -19,3 +19,10 @@ export function getItem(key, defaultValue) {
 export function setItem(key, value) {
   localStorage.setItem(key, JSON.stringify(value));
 }
+
+
+export function getCurrentPosition(options = {}) {
+  return new Promise((resolve, reject) => {
+      navigator.geolocation.getCurrentPosition(resolve, reject, options);
+  });
+}

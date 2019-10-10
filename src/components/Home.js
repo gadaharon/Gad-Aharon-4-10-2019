@@ -1,30 +1,31 @@
 import React, { useContext, useEffect } from "react";
+import { connect } from "react-redux";
+import {
+  getCurrentWeather,
+  getFiveDaysForecast
+} from "../actions/weatherActions";
+
 import { Container } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import uuid from "uuid";
+
 import WeatherList from "./WeatherList";
-import WeatherContext from "../context/WeatherContext";
 import AlertContext from "../context/AlertContext";
 import SettingsContext from "../context/SettingsContext";
 import AutoComplete from "./AutoComplete";
-import { getDayByDate, getItem, isEmpty, setItem } from "../Utils/utils";
 import WeatherListItem from "./WeatherListItem";
 import Alerts from "./Alerts";
 
-export default function Home() {
-  const weatherContext = useContext(WeatherContext);
+import { getDayByDate, getItem, isEmpty, setItem } from "../Utils/utils";
+import uuid from "uuid";
+
+const Home = ({ weather, getCurrentWeather, getFiveDaysForecast }) => {
   const settingsContext = useContext(SettingsContext);
   const alertContext = useContext(AlertContext);
 
-  const {
-    fiveDaysForecast,
-    location,
-    getCurrentWeather,
-    currentWeather,
-    getFiveDaysForecast
-  } = weatherContext;
+  const { fiveDaysForecast, location, currentWeather } = weather;
   const { Headline = {}, DailyForecasts = [] } = fiveDaysForecast;
   const { forecast = {}, isFavorite } = currentWeather;
+  
   const { setAlert } = alertContext;
 
   const { settings } = settingsContext;
@@ -125,4 +126,13 @@ export default function Home() {
       </Container>
     </div>
   );
-}
+};
+
+const mapStateToProps = state => ({
+  weather: state.weather
+});
+
+export default connect(
+  mapStateToProps,
+  { getFiveDaysForecast, getCurrentWeather }
+)(Home);
