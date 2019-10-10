@@ -1,13 +1,12 @@
 import React, { useContext } from "react";
-import SettingsContext from "../context/SettingsContext";
+import { connect } from "react-redux";
+import { toggleAnimations } from "../actions/settingsActions";
 import { Nav, Navbar } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Switch from "./Switch";
 
-export default function NavBar() {
-  const settingsContext = useContext(SettingsContext);
-  const { showAnimations, toggleAnimations } = settingsContext;
-
+const NavBar = ({ settings, toggleAnimations }) => {
+  const { showAnimations } = settings;
   return (
     <Navbar bg="dark" variant="dark" expand="lg">
       <Navbar.Brand>
@@ -38,4 +37,13 @@ export default function NavBar() {
       </Navbar.Collapse>
     </Navbar>
   );
-}
+};
+
+const mapStateToProps = state => ({
+  settings: state.settings
+});
+
+export default connect(
+  mapStateToProps,
+  { toggleAnimations }
+)(NavBar);

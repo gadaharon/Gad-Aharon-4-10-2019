@@ -1,16 +1,15 @@
-import React, { useContext, useEffect } from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import {
   getCurrentWeather,
   getFiveDaysForecast
 } from "../actions/weatherActions";
+import { setAlert } from '../actions/alertAction';
 
 import { Container } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import WeatherList from "./WeatherList";
-import AlertContext from "../context/AlertContext";
-import SettingsContext from "../context/SettingsContext";
 import AutoComplete from "./AutoComplete";
 import WeatherListItem from "./WeatherListItem";
 import Alerts from "./Alerts";
@@ -18,17 +17,11 @@ import Alerts from "./Alerts";
 import { getDayByDate, getItem, isEmpty, setItem } from "../Utils/utils";
 import uuid from "uuid";
 
-const Home = ({ weather, getCurrentWeather, getFiveDaysForecast }) => {
-  const settingsContext = useContext(SettingsContext);
-  const alertContext = useContext(AlertContext);
-
+const Home = ({ weather, getCurrentWeather, getFiveDaysForecast, setAlert, settings }) => {
   const { fiveDaysForecast, location, currentWeather } = weather;
   const { Headline = {}, DailyForecasts = [] } = fiveDaysForecast;
   const { forecast = {}, isFavorite } = currentWeather;
-  
-  const { setAlert } = alertContext;
 
-  const { settings } = settingsContext;
   const { showAnimations } = settings;
 
   useEffect(() => {
@@ -129,10 +122,11 @@ const Home = ({ weather, getCurrentWeather, getFiveDaysForecast }) => {
 };
 
 const mapStateToProps = state => ({
-  weather: state.weather
+  weather: state.weather,
+  settings: state.settings
 });
 
 export default connect(
   mapStateToProps,
-  { getFiveDaysForecast, getCurrentWeather }
+  { getFiveDaysForecast, getCurrentWeather, setAlert }
 )(Home);

@@ -1,13 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
-import {
-  setLocation,
-  getLocationByGeoPosition,
-  getLocation
-} from "../actions/weatherActions";
 import { setAlert } from "../actions/alertAction";
+import { getLocation, getLocationByGeoPosition, setLocation } from "../actions/weatherActions";
+import { getCurrentPosition, isEmpty } from "../Utils/utils";
 
-import { isEmpty, getCurrentPosition } from "../Utils/utils";
 
 const DEFAULT_CITY = "Tel Aviv";
 

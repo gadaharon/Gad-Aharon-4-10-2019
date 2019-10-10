@@ -1,13 +1,7 @@
-import React, { useContext } from "react";
-import SettingsContext from "../context/SettingsContext";
+import React from "react";
+import { connect } from "react-redux";
 
-export default function WeatherListItem({
-  header,
-  body = null,
-  footer = null
-}) {
-  const settingsContext = useContext(SettingsContext);
-  const { settings } = settingsContext;
+const WeatherListItem = ({ header, body = null, footer = null, settings }) => {
   const { showAnimations } = settings;
 
   return (
@@ -22,4 +16,10 @@ export default function WeatherListItem({
       </div>
     </li>
   );
-}
+};
+
+const mapStateToProps = state => ({
+  settings: state.settings
+});
+
+export default connect(mapStateToProps)(WeatherListItem);

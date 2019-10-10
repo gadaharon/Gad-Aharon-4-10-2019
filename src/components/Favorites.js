@@ -1,7 +1,6 @@
-import React, { useContext, useEffect } from "react";
+import React, { useEffect } from "react";
 import { connect } from 'react-redux';
 import { Link } from "react-router-dom";
-import SettingsContext from "../context/SettingsContext";
 import WeatherList from "./WeatherList";
 import WeatherListItem from "./WeatherListItem";
 import { Container } from "react-bootstrap";
@@ -9,10 +8,8 @@ import { isEmpty } from "../Utils/utils";
 
 import { getFavorites, setLocation } from '../actions/weatherActions';
 
-const Favorites = ({ favorites, getFavorites, setLocation}) => {
-  const settingsContext = useContext(SettingsContext);
+const Favorites = ({ favorites, getFavorites, setLocation, settings }) => {
 
-  const { settings } = settingsContext;
   const { showAnimations } = settings;
 
   const onFavoriteClick = city => {
@@ -60,7 +57,8 @@ const Favorites = ({ favorites, getFavorites, setLocation}) => {
 }
 
 const mapStateToProps = state => ({
-  favorites: state.weather.favorites
+  favorites: state.weather.favorites,
+  settings: state.settings
 })
 
 export default connect(mapStateToProps, { setLocation, getFavorites })(Favorites);
