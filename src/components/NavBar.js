@@ -1,8 +1,9 @@
-import React, { useContext } from "react";
-import { connect } from "react-redux";
-import { toggleAnimations } from "../actions/settingsActions";
+import React from "react";
+import PropTypes from "prop-types";
 import { Nav, Navbar } from "react-bootstrap";
+import { connect } from "react-redux";
 import { Link } from "react-router-dom";
+import { toggleAnimations } from "../actions/settingsActions";
 import Switch from "./Switch";
 
 const NavBar = ({ settings, toggleAnimations }) => {
@@ -38,6 +39,11 @@ const NavBar = ({ settings, toggleAnimations }) => {
     </Navbar>
   );
 };
+
+NavBar.propTypes = {
+  settings: PropTypes.object.isRequired, 
+  toggleAnimations: PropTypes.func.isRequired
+}
 
 const mapStateToProps = state => ({
   settings: state.settings

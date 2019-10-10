@@ -1,5 +1,6 @@
 import React from "react";
-import { connect } from 'react-redux';
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const Alerts = ({ alerts }) => {
@@ -13,8 +14,12 @@ const Alerts = ({ alerts }) => {
   );
 };
 
+Alerts.propTypes = {
+  alerts: PropTypes.array.isRequired
+};
+
 const mapStateToProps = state => ({
   alerts: state.alerts
-})
+});
 
 export default connect(mapStateToProps)(Alerts);

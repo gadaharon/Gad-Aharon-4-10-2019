@@ -1,6 +1,7 @@
 import React, { useState } from "react";
+import PropTypes from "prop-types";
 
-export default function Switch(props) {
+const Switch = (props) => {
   const [value, setValue] = useState(true);
 
   function onValueChange(e) {
@@ -34,3 +35,9 @@ export default function Switch(props) {
     </div>
   );
 }
+
+Switch.propTypes = {
+  onValueChange: PropTypes.func.isRequired
+}
+
+export default Switch;

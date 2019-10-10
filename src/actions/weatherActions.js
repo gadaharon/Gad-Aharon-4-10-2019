@@ -30,7 +30,6 @@ export const getDailyForecast = (URL, locationKey, onFinish) => {
 
 //   Get Current Weather
 export const getCurrentWeather = location => dispatch => {
-  console.log(location);
   if (!isEmpty(location)) {
     //   Get favorites from local storage
     const favorites = getItem("favorites", {});

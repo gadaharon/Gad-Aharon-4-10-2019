@@ -1,10 +1,11 @@
 import React, { useEffect } from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import {
   getCurrentWeather,
   getFiveDaysForecast
 } from "../actions/weatherActions";
-import { setAlert } from '../actions/alertAction';
+import { setAlert } from "../actions/alertAction";
 
 import { Container } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -17,7 +18,13 @@ import Alerts from "./Alerts";
 import { getDayByDate, getItem, isEmpty, setItem } from "../Utils/utils";
 import uuid from "uuid";
 
-const Home = ({ weather, getCurrentWeather, getFiveDaysForecast, setAlert, settings }) => {
+const Home = ({
+  weather,
+  getCurrentWeather,
+  getFiveDaysForecast,
+  setAlert,
+  settings
+}) => {
   const { fiveDaysForecast, location, currentWeather } = weather;
   const { Headline = {}, DailyForecasts = [] } = fiveDaysForecast;
   const { forecast = {}, isFavorite } = currentWeather;
@@ -119,6 +126,14 @@ const Home = ({ weather, getCurrentWeather, getFiveDaysForecast, setAlert, setti
       </Container>
     </div>
   );
+};
+
+Home.propTypes = {
+  weather: PropTypes.object.isRequired,
+  getCurrentWeather: PropTypes.func.isRequired,
+  getFiveDaysForecast: PropTypes.func,
+  setAlert: PropTypes.func.isRequired,
+  settings: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({

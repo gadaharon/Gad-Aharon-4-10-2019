@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { setAlert } from "../actions/alertAction";
 import { getLocation, getLocationByGeoPosition, setLocation } from "../actions/weatherActions";
@@ -107,6 +108,13 @@ const AutoComplete = ({
     </form>
   );
 };
+
+AutoComplete.propTypes = {
+  weather: PropTypes.object.isRequired,
+  setLocation: PropTypes.func.isRequired,
+  getLocationByGeoPosition: PropTypes.func,
+  setAlert: PropTypes.func.isRequired
+}
 
 const mapStateToProps = state => ({
   weather: state.weather

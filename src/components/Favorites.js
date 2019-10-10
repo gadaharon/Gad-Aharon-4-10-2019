@@ -1,12 +1,13 @@
 import React, { useEffect } from "react";
+import PropTypes from "prop-types";
+import { Container } from "react-bootstrap";
 import { connect } from 'react-redux';
 import { Link } from "react-router-dom";
+import { getFavorites, setLocation } from '../actions/weatherActions';
+import { isEmpty } from "../Utils/utils";
 import WeatherList from "./WeatherList";
 import WeatherListItem from "./WeatherListItem";
-import { Container } from "react-bootstrap";
-import { isEmpty } from "../Utils/utils";
 
-import { getFavorites, setLocation } from '../actions/weatherActions';
 
 const Favorites = ({ favorites, getFavorites, setLocation, settings }) => {
 
@@ -54,6 +55,13 @@ const Favorites = ({ favorites, getFavorites, setLocation, settings }) => {
       </Container>
     </div>
   );
+}
+
+Favorites.propTypes = {
+  favorites: PropTypes.object.isRequired, 
+  getFavorites: PropTypes.func.isRequired, 
+  setLocation: PropTypes.func.isRequired, 
+  settings: PropTypes.object.isRequired
 }
 
 const mapStateToProps = state => ({
